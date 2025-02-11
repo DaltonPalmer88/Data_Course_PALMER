@@ -78,3 +78,62 @@ new_file = penguins %>%
   
 write.csv(new_file, 'penguins_1.csv')
 
+
+
+#february 4
+
+## 1 find fattie penguins (> 500)
+
+library(tidyverse)
+library(palmerpenguins)
+View(penguins)
+penguins%>%
+  filter(body_mass_g > 5000) 
+## 2 count how many are male and how many are female
+penguins %>% 
+  filter(body_mass_g > 5000) %>% 
+  group_by(sex) %>% 
+  summarise(count = n())
+
+##3 return max body mass for male and female
+penguins %>% 
+  filter(body_mass_g > 5000) %>% 
+  group_by(sex) %>% 
+  summarise(count = n(),
+            fattest = max(body_mass_g),
+            skinny_among_fatties = min(body_mass_g))
+
+max(penguins$body_mass_g, na.rm = T)
+
+penguins$body_mass_g %>% 
+  max(na.rm = T)
+
+## 4 add new column to penguins to dataset that says whether they are fat
+
+dat_peng <- peguins
+
+dat_peng$fat_state <- dat_peng$body_mass_g > 5000
+view(dat_peng)
+
+penguins %>% 
+  mutate(fat_or_not = case_when(body_mass_g > 5000 ~ 'fat',
+                                body_mass_g <= 5000 & body_mass_g > 3000 ~ 'medium',
+                                body_mass_g <= 3000 ~ 'skinny',
+                                TRUE ~ 'NA')) %>% 
+  view()
+## if condition is true 
+dat_peng <- penguins %>% 
+  mutate(fat_or_not = case_when(body_mass_g > 5000 ~ 'fat',
+                                body_mass_g <= 5000 & body_mass_g > 3000 ~ 'medium',
+                                body_mass_g <= 3000 ~ 'skinny',
+                                TRUE ~ 'NA')) 
+plot(dat_peng$bill_length_mm, dat_peng$body_mass_g) %>% 
+library(ggplot2)
+dat_peng %>% 
+  filter(!is.na(sex)) %>% 
+  ggplot(aes(x = bill_length_mm,
+             y = body_mass_g,
+             colour = sex)) +
+  geom_point()
+
+#aes = aesthetic
