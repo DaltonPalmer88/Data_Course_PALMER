@@ -1,0 +1,12 @@
+#1 final_project_idea.txt
+
+#2 my idea for the final project is to collect data from the Provo airport on temperature and humidity as well as collect samples of choke cherry trees which I can use to test their cyanogenic glycosides and see if there is any correlation between them.
+#3 I am able to collect all the weather information from the national weather service. They have a website where I can download a csv file from the Provo airport which is near our population of choke sherry trees. My cyanogen glycoside levels will be analyzed in a lab from collected samples that will be collected and analyzed weekly.
+#4 I have some data. I will download a weekly weather report and then hopefully I should be able to compile it all into one document at the end of the semester.
+#5
+library(tidyverse)
+library(ggplot2)
+weather_feb_24 %>% 
+  ggplot(aes(x = DateTime, y = Temperature))+
+  geom_point()
+
