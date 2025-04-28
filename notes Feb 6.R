@@ -44,4 +44,67 @@ penguins %>%
   geom_col(position = 'dodge')
 
 
+##February 13 notes
+###create a graph with x as flipper length and y as body mass
+
+library(tidyverse)
+library(palmerpenguins)
+
+penguins %>% 
+  ggplot(aes(x = flipper_length_mm,
+             y = body_mass_g)) +
+  geom_point()
+
+
+penguins %>% 
+  ggplot(aes(x = flipper_length_mm,
+             y = body_mass_g)) +
+  geom_area()
   
+penguins %>% 
+  filter(!is.na(flipper_length_mm)) %>% 
+  filter(!is.na(body_mass_g)) %>% 
+  ggplot(aes(x = body_mass_g,
+             fill = species)) +
+  geom_histogram(alpha = .5)
+
+my_plot <- penguins %>% 
+  filter(!is.na(flipper_length_mm)) %>% 
+  filter(!is.na(body_mass_g)) %>% 
+  ggplot(aes(x = body_mass_g,
+             y = flipper_length_mm,
+             color = species)) +
+  geom_point()
+
+my_2nd_plot <- my_plot + stat_ellipse()
+
+ggsave("penguin graph.jpg", plot = my_2nd_plot,
+       width = 6, height = 8, dpi = 300)
+
+## load DatasaurusDozen.tsv
+
+datasaurus_dat <- read_tsv('Data/DatasaurusDozen.tsv')
+head(dat)
+
+read.delim('Data/DatasaurusDozen.tsv')
+dim(datasaurus_dat)#1846 3
+head(datasaurus_dat)
+str(datasaurus_dat)
+
+datasaurus_dat %>% 
+  ggplot(aes(x = x,
+             fill = dataset))+
+  geom_density()
+
+datasaurus_dat %>% 
+  ggplot(aes(x = x,
+             y = y,
+             fill = dataset))+
+  geom_point()+
+  facet_wrap(~ dataset)
+
+install.packages('GGally')
+library(GGally)
+ggpairs(penguins)
+
+install.packages('')

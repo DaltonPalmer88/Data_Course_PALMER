@@ -137,3 +137,21 @@ dat_peng %>%
   geom_point()
 
 #aes = aesthetic
+
+
+
+## february 6 
+
+penguins %>% 
+  names()
+
+bad_dat <- penguins %>% 
+  mutate(yearr = year + 20) %>% 
+  View()
+
+
+
+
+
+
+  

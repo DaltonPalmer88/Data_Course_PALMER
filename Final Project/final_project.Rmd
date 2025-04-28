@@ -1,0 +1,70 @@
+---
+title: "Final Project"
+output: html_document
+date: "2025-04-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This project focuses on cyanogen concentrations within different parts of the Prunus virginiana tree throughout the seasons. Specifically looking at concentrations within the root, stem and leaves of P. virginiana.  
+
+
+## Background
+
+The chokecherry tree, Prunus virginiana is a well-known native plant across much of the northern US and mountain west, including Utah. It grows not only uncultivated, but also as an ornamental plant and has historically been a food source. The fruits can be eaten raw, made into preserves or wine, or used in a variety of traditional Native American foods. Ecologically, it is host to many native lepidopterans and it provides important nutrients for native wildlife such as birds and deer, however, it can be dangerous for livestock to consume. 
+
+P. virginiana contains compounds such as prunasin and amygdalin, which are known as cyanogens and get converted into cyanide when eaten. Though the cyanogenic potential is best known because of the concentrations of the above-mentioned compounds found in the cherry pit. When eaten in excess and without the expulsion of the cherry pit, it can lead to poisoning of humans eating the fruit. We are familiar with the dangers of the pit, but it has been found that the highest concentration of cyanogens in the plant is in the new shoot growth in the spring. Because of this, it is especially dangerous to cows and horses when grazing during the spring. 
+
+throughout this project samples of a local prunus virginiana population have been taken weekly and then frozen on campus. they then undergo a picric acid test to determine the exact concentration  of cyanogens in the specific plant sections. we can take these concentrations and see if there is any correlation to temperature. 
+
+## Data 
+This is all the weather data that has been collected by my group. We were able to access and download local weather conditions from  the weather station at the provo airport via the National Weather Service website. 
+```{r include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(readxl)
+library(measurements)
+library(janitor)
+library(caret)
+library(dplyr)
+
+
+
+wet1 <- read.csv('chart (1).csv')
+wet2 <- read.csv('chart (2).csv')
+wet3 <- read.csv('chart (3).csv')
+wet4 <- read.csv('chart (4).csv')
+wet5 <- read.csv('chart (5).csv')
+wet6 <- read.csv('chart (6).csv')
+wet7 <- read.csv('chart (7).csv')
+wet8 <- read.csv('chart (8).csv')
+
+allwet <-rbind(wet1, wet2, wet3, wet4, wet5, wet6, wet7, wet8)
+```
+```{r echo=FALSE}
+ggplot(allwet, aes(x = DateTime, y = Temperature)) +
+  geom_point() +
+  labs(x = "Time", y = "Temperature") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45))
+```
+```{r echo=FALSE}
+ggplot(allwet, aes(x = Temperature, y = Relative.Humidity)) +
+  geom_point() +
+  labs(x = "Temperature", y = "Humidity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45))
+```
+
+```{r include=FALSE}
+print(allwet)
+
+```
+
+## Discussion
+
+With the data collected above we will be able to see if the different weather variables have any correlation to levels of cyanogens in certain plant materials, as soon as we get data from our picric acid and chromatograph tests.  This will hopefully show us how cyanogens move through the trees in order to protect themselves from herbivores as the temperatures increase. 
