@@ -1,0 +1,152 @@
+---
+title: "Exam 3"
+output: 
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+---
+Dalton Palmer
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Setup
+```{r}
+library(tidyverse)
+library(broom)
+```
+
+---
+
+## Task1
+
+
+```{r}
+#Read in csv 
+dat <- read.csv("FacultySalaries_1995.csv")
+```
+
+
+
+```{r}
+dat <- dat %>% 
+  filter(Tier %in% c("I","IIA", "IIB")) %>% 
+  select("Tier", "State",
+         Full = "AvgFullProfSalary", 
+         Assoc = "AvgAssocProfSalary", 
+         Assist = "AvgAssistProfSalary") %>% 
+  pivot_longer(cols = c("Full", "Assoc", "Assist"),
+               names_to = "Rank",
+               values_to = "Salary")
+```
+
+ 
+```{r}
+p1_dat<- 
+  ggplot(dat)+
+  aes(x = Rank, y = Salary, fill = Rank)+
+  geom_boxplot()+
+  facet_wrap(~Tier)+
+  labs( 
+    x = "Rank", 
+    y = "Salary", 
+    fill = "Rank" 
+  ) + 
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45)
+  ) 
+
+print(p1_dat)
+```
+
+---
+
+## Task2
+
+
+```{r}
+
+head(dat)
+
+dat$Tier <- factor(dat$Tier)
+dat$Rank <- factor(dat$Rank)
+
+
+anova_mod <- aov(Salary ~ State + Tier + Rank, data = dat)
+
+
+summary(anova_mod)
+```
+
+
+---
+
+## Task3
+
+```{r}
+
+juniper <- read.csv("Juniper_Oils.csv")
+```
+
+ 
+```{r}
+important_juniper <- juniper %>% 
+  select(YearsSinceBurn, alpha.pinene:thujopsenal)
+```
+
+
+```{r}
+long_juniper <- important_juniper %>% 
+  pivot_longer(cols = alpha.pinene:thujopsenal,
+               names_to = "Chemical_name",
+               values_to = "Concentration")
+```
+
+## Task4
+
+
+```{r}
+ggplot(long_juniper)+
+  aes(x = YearsSinceBurn, y = Concentration)+
+  facet_wrap(~Chemical_name, scales = "free_y")+
+  geom_smooth(color = "blue")+
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 7) 
+  ) +
+  labs(
+    title = "Chemical Concentrations and Years Since Burn",
+    x = "Years Since Burn",
+    y = "Concentration"
+  )
+```
+
+---
+
+## Task5
+
+
+```{r}
+
+juniper_large_mod <- glm(Concentration ~ YearsSinceBurn * Chemical_name, 
+                       data = long_juniper)
+
+
+mod_output <- tidy(juniper_large_mod)
+
+
+significant_chemicals <- mod_output %>% 
+  filter(p.value < 0.05) #filter for significance
+
+print(significant_chemicals)
+```
+
